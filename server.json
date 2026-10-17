@@ -1,0 +1,40 @@
+{
+  "log": {
+    "loglevel": "warning",
+    "error": "/var/log/xray2/error.log",
+    "access": "/var/log/xray2/access.log"
+  },
+  "inbounds": [
+    {
+      "port": 10010,
+      "listen": "127.0.0.1",
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "f6ded991-a4a2-428c-bc0c-66dbedd1d73e",
+            "level": 0,
+            "email": "user@hackdeem.user"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/vless-ws"
+        },
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveIdle": 60,
+          "tcpUserTimeout": 120000
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    { "protocol": "freedom", "tag": "direct" },
+    { "protocol": "blackhole", "tag": "block" }
+  ]
+}
