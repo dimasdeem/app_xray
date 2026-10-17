@@ -1,0 +1,53 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "udp": true
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "tag": "proxy",
+      "settings": {
+        "vnext": [
+          {
+            "address": "ip_target",
+            "port": 80,
+            "users": [
+              {
+                "id": "f6ded991-a4a2-428c-bc0c-66dbedd1d73e",
+                "encryption": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/vless-ws",
+          "headers": {
+            "Host": "domain.com",
+            "X-Raw-Request": "GET / HTTP/1.1[crlf]Host: edu.ruangguru.com[crlf]Upgrade: websocket[crlf][crlf]PATCH [path] HTTP/1.1[crlf]Host: [host][crlf]Upgrade: websocket[crlf][crlf][split]HTTP/ 200 OK[crlf][crlf]",
+            "X-Debug-Log": "false"
+          }
+        },
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveIdle": 60,
+          "tcpUserTimeout": 120000
+        }
+      }
+    }
+  ]
+}
