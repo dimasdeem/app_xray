@@ -12,15 +12,3 @@ Furthermore, this project includes advanced *TCP-in-TCP* optimizations to elimin
 4. **Anti-Bufferbloat (OS-Level Backpressure)**: Utilizes a custom `SetWriteBuffer(512KB)` in the dialer to prevent fake "Burst Upload" illusions, ensuring large file uploads are stable, fluctuating naturally with the real network speed, and never timing out.
 
 ---
-
-## 🧠 Architecture (How it Works)
-
-Standard Xray fails against DPI that blocks WebSocket handshakes. This modification alters the handshake flow:
-
-1. **Client → Server**: Sends `GET / HTTP/1.1` (Host: `edu.ruangguru.com`) to deceive the DPI into thinking this is normal educational traffic.
-2. **Server → Client**: The server replies with `HTTP/ 200 OK` (Spoof Marker).
-3. **Client → Server**: Sends `PATCH /vless-ws HTTP/1.1` with complete WebSocket headers (`Connection: Upgrade`, `Sec-WebSocket-Key`, etc.) and appends the Spoof Marker.
-4. **Server**: Bypasses the `PATCH` method restriction, discards the Spoof Marker from the buffer, and replies with `101 Switching Protocols`.
-5. **Tunnel Established**: The WebSocket connection is active, and VLESS data flows normally.
-
----
